@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+        h1, h2 {
+            color: #003366;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            padding: 8px;
+            margin-top: 5px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #005f99;
+        }
+        .description {
+            background: #eaf4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f0fff0;
+            color: #006400;
+            font-weight: bold;
+        }
+        .result-bad {
+            background-color: #ffe6e6;
+            color: #990000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Heart Disease Prediction System</h1>
+
+    <div class="description">
+        <h2>What is Heart Disease?</h2>
+        <p>Heart disease refers to a range of conditions that affect your heart, including coronary artery disease, heart rhythm problems, and congenital heart defects. It's one of the leading causes of death worldwide.</p>
+
+        <h2>Causes of Heart Disease</h2>
+        <ul>
+            <li>High blood pressure</li>
+            <li>Smoking</li>
+            <li>Obesity and physical inactivity</li>
+            <li>Unhealthy diet and high cholesterol</li>
+            <li>Diabetes</li>
+        </ul>
+
+        <h2>Scientific Progress in Prediction</h2>
+        <p>With the rise of data science and machine learning, researchers can now use models trained on patient data to predict the likelihood of heart disease. These models analyze patterns in factors like cholesterol, blood pressure, and ECG results, enabling early detection and preventive care.</p>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="/heart">
+            <label>Age</label>
+            <input type="number" name="age" required>
+
+            <label>Sex (1 = male, 0 = female)</label>
+            <input type="number" name="sex" min="0" max="1" required>
+
+            <label>Chest Pain Type (0–3)</label>
+            <input type="number" name="cp" min="0" max="3" required>
+
+            <label>Resting Blood Pressure</label>
+            <input type="number" name="trestbps" required>
+
+            <label>Cholesterol</label>
+            <input type="number" name="chol" required>
+
+            <label>Fasting Blood Sugar > 120 mg/dl (1 = true; 0 = false)</label>
+            <input type="number" name="fbs" min="0" max="1" required>
+
+            <label>Resting ECG results (0–2)</label>
+            <input type="number" name="restecg" min="0" max="2" required>
+
+            <label>Maximum Heart Rate Achieved</label>
+            <input type="number" name="thalach" required>
+
+            <label>Exercise-induced Angina (1 = yes; 0 = no)</label>
+            <input type="number" name="exang" min="0" max="1" required>
+
+            <label>ST depression induced by exercise</label>
+            <input type="text" name="oldpeak" required>
+
+            <label>Slope of the peak exercise ST segment (0–2)</label>
+            <input type="number" name="slope" min="0" max="2" required>
+
+            <label>Number of major vessels (0–3)</label>
+            <input type="number" name="ca" min="0" max="3" required>
+
+            <label>Thal (1 = normal; 2 = fixed defect; 3 = reversible defect)</label>
+            <input type="number" name="thal" min="1" max="3" required>
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="form-container result-container {% if 'High' in result %}result-bad{% endif %}">
+        <h2>Prediction Result:</h2>
+        <p>{{ result }}</p>
+    </div>
+    {% endif %}
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("/heart", {
+                method: "POST",
+                body: formData
+            });
+            const html = await response.text();
+            document.open();
+            document.write(html);
+            document.close();
+        });
+    </script>
+</body>
+</html>

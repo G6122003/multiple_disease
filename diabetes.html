@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Diabetes Prediction</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #e0f2f1, #ffffff);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 40px;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    color: #00796b;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-section {
+    background-color: #f1f8e9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.2s;
+  }
+
+  input[type="number"]:focus {
+    border-color: #00897b;
+    outline: none;
+  }
+
+  /* Button styles */
+  .predict-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #00897b;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 20px;
+  }
+
+  .predict-btn:hover {
+    background-color: #00695c;
+    transform: translateY(-2px);
+  }
+
+  /* Result display */
+  .result {
+    margin-top: 30px;
+    font-size: 1.3em;
+    text-align: center;
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    body {
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Diabetes Prediction</h1>
+  <div class="form-section">
+    <form id="diabetesForm">
+      <!-- Input fields for features -->
+      <div class="form-group">
+        <label for="Pregnancies">Pregnancies</label>
+        <input type="number" id="Pregnancies" name="Pregnancies" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="Glucose">Glucose Level</label>
+        <input type="number" id="Glucose" name="Glucose" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="BloodPressure">Blood Pressure</label>
+        <input type="number" id="BloodPressure" name="BloodPressure" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="SkinThickness">Skin Thickness</label>
+        <input type="number" id="SkinThickness" name="SkinThickness" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="Insulin">Insulin Level</label>
+        <input type="number" id="Insulin" name="Insulin" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="BMI">BMI</label>
+        <input type="number" id="BMI" name="BMI" step="0.01" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="DiabetesPedigreeFunction">Diabetes Pedigree Function</label>
+        <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" step="0.001" min="0" required />
+      </div>
+      <div class="form-group">
+        <label for="Age">Age</label>
+        <input type="number" id="Age" name="Age" min="0" required />
+      </div>
+
+      <button type="button" class="predict-btn" onclick="predictDiabetes()">
+        <i class="fas fa-vial"></i> Predict
+      </button>
+    </form>
+  </div>
+
+  <!-- Display Prediction Result -->
+  <div class="result" id="predictionResult"></div>
+</div>
+
+<script>
+  async function predictDiabetes() {
+    // Collect input data
+    const data = {
+      Pregnancies: parseFloat(document.getElementById('Pregnancies').value),
+      Glucose: parseFloat(document.getElementById('Glucose').value),
+      BloodPressure: parseFloat(document.getElementById('BloodPressure').value),
+      SkinThickness: parseFloat(document.getElementById('SkinThickness').value),
+      Insulin: parseFloat(document.getElementById('Insulin').value),
+      BMI: parseFloat(document.getElementById('BMI').value),
+      DiabetesPedigreeFunction: parseFloat(document.getElementById('DiabetesPedigreeFunction').value),
+      Age: parseFloat(document.getElementById('Age').value)
+    };
+
+    try {
+      // Send data to your backend prediction API
+      const response = await fetch('/predict_diabetes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+
+      // Display result
+      const resultDiv = document.getElementById('predictionResult');
+      if (result.prediction === 1) {
+        resultDiv.innerHTML = `<span style="color: red;">🛑 High risk of Diabetes</span>`;
+      } else {
+        resultDiv.innerHTML = `<span style="color: green;">✅ Low risk of Diabetes</span>`;
+      }
+    } catch (error) {
+      console.error("Error during prediction:", error);
+      document.getElementById('predictionResult').innerHTML = `<span style="color: orange;">Error predicting. Please try again.</span>`;
+    }
+  }
+</script>
+
+</body>
+</html>
