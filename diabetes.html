@@ -1,185 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Diabetes Prediction</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to right, #e0f2f1, #ffffff);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #2c3e50;
-  }
-
-  .container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 40px;
-  }
-
-  h1 {
-    font-size: 2.5em;
-    color: #00796b;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .form-section {
-    background-color: #f1f8e9;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-  }
-
-  .form-group {
-    margin-bottom: 15px;
-  }
-
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: border-color 0.2s;
-  }
-
-  input[type="number"]:focus {
-    border-color: #00897b;
-    outline: none;
-  }
-
-  /* Button styles */
-  .predict-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #00897b;
-    border: none;
-    color: white;
-    padding: 15px 25px;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    margin-top: 20px;
-  }
-
-  .predict-btn:hover {
-    background-color: #00695c;
-    transform: translateY(-2px);
-  }
-
-  /* Result display */
-  .result {
-    margin-top: 30px;
-    font-size: 1.3em;
-    text-align: center;
-  }
-
-  /* Responsive */
-  @media(max-width: 768px) {
+  <meta charset="UTF-8" />
+  <title>Diabetes Prediction</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
     body {
-      padding: 20px;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e0f2f1, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #2c3e50;
     }
-  }
-</style>
+
+    .nav-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+    }
+
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .nav-button:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 40px;
+    }
+
+    .feature-info {
+      width: 25%;
+      margin-right: 30px;
+    }
+
+    .feature-info h2 {
+      font-size: 1.5em;
+      color: #00796b;
+      margin-bottom: 15px;
+    }
+
+    details {
+      background: #fefde8;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    summary {
+      font-weight: bold;
+
+      color: #00796b;
+
+          }
+
+    .container {
+      width: 70%;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #00796b;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      background-color: #e8f5e9;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .form-section {
+      background-color: #f1f8e9;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #00897b;
+      outline: none;
+    }
+
+    .predict-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-top: 20px;
+    }
+
+    .predict-btn:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    @media(max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .main-content {
+        flex-direction: column;
+      }
+      .feature-info, .container {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<div class="container">
-  <h1>Diabetes Prediction</h1>
-  <div class="form-section">
-    <form id="diabetesForm">
-      <!-- Input fields for features -->
-      <div class="form-group">
-        <label for="Pregnancies">Pregnancies</label>
-        <input type="number" id="Pregnancies" name="Pregnancies" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="Glucose">Glucose Level</label>
-        <input type="number" id="Glucose" name="Glucose" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="BloodPressure">Blood Pressure</label>
-        <input type="number" id="BloodPressure" name="BloodPressure" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="SkinThickness">Skin Thickness</label>
-        <input type="number" id="SkinThickness" name="SkinThickness" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="Insulin">Insulin Level</label>
-        <input type="number" id="Insulin" name="Insulin" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="BMI">BMI</label>
-        <input type="number" id="BMI" name="BMI" step="0.01" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="DiabetesPedigreeFunction">Diabetes Pedigree Function</label>
-        <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" step="0.001" min="0" required />
-      </div>
-      <div class="form-group">
-        <label for="Age">Age</label>
-        <input type="number" id="Age" name="Age" min="0" required />
-      </div>
-
-      <button type="button" class="predict-btn" onclick="predictDiabetes()">
-        <i class="fas fa-vial"></i> Predict
-      </button>
-    </form>
-  </div>
-
-  <!-- Display Prediction Result -->
-  <div class="result" id="predictionResult"></div>
+<div class="nav-buttons">
+  <a href="/" class="nav-button"><i class="fas fa-home"></i> Home</a>
+  <a href="/diabetes" class="nav-button"><i class="fas fa-syringe"></i> Diabetes</a>
+  <a href="/heart" class="nav-button"><i class="fas fa-heartbeat"></i> Heart</a>
+  <a href="/cancer" class="nav-button"><i class="fas fa-vial"></i> Breast Cancer</a>
+  <a href="/kidney" class="nav-button"><i class="fas fa-tint"></i> Kidney</a>
 </div>
 
-<script>
-  async function predictDiabetes() {
-    // Collect input data
-    const data = {
-      Pregnancies: parseFloat(document.getElementById('Pregnancies').value),
-      Glucose: parseFloat(document.getElementById('Glucose').value),
-      BloodPressure: parseFloat(document.getElementById('BloodPressure').value),
-      SkinThickness: parseFloat(document.getElementById('SkinThickness').value),
-      Insulin: parseFloat(document.getElementById('Insulin').value),
-      BMI: parseFloat(document.getElementById('BMI').value),
-      DiabetesPedigreeFunction: parseFloat(document.getElementById('DiabetesPedigreeFunction').value),
-      Age: parseFloat(document.getElementById('Age').value)
-    };
+<div class="main-content">
+  <div class="feature-info">
+    <h2><strong>Feature Information</strong></h2>
+    <details><summary>Pregnancies</summary>Number of times pregnant. Higher count may increase diabetes risk. Normal: 0–17</details>
+    <details><summary>Glucose</summary>Plasma glucose concentration over 2 hours in an oral glucose tolerance test. Normal: 70–140 mg/dL</details>
+    <details><summary>Blood Pressure</summary>Diastolic blood pressure. High BP increases diabetes risk. Normal: ~80 mm Hg</details>
+    <details><summary>Skin Thickness</summary>Triceps skinfold thickness in mm. Correlates with body fat. Normal: ~20–35 mm</details>
+    <details><summary>Insulin</summary>2-Hour serum insulin (μU/mL). Indicates insulin resistance. Normal: 16–166 μU/mL</details>
+    <details><summary>BMI</summary>Body Mass Index (kg/m²). Obesity increases diabetes risk. Normal: 18.5–24.9</details>
+    <details><summary>Diabetes Pedigree Function</summary>Likelihood of diabetes based on family history. No strict normal value.</details>
+    <details><summary>Age</summary>Older age increases risk. Dataset covers ages 21–81. Risk increases >45.</details>
 
-    try {
-      // Send data to your backend prediction API
-      const response = await fetch('/predict_diabetes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json();
+    <h2><strong>Suggestions Based on Prediction</strong></h2>
+    <details><summary>High Risk</summary>
+      <ul>
+        <li>Consult a healthcare provider immediately for a proper diabetes test (e.g., A1C, FPG).</li>
+        <li>Adopt a low-sugar, low-carb diet under medical guidance.</li>
+        <li>Engage in regular physical activity (30–60 minutes/day).</li>
+        <li>Monitor blood glucose levels if recommended by a doctor.</li>
+        <li>Review medication or insulin needs with a healthcare provider.</li>
+      </ul>
+    </details>
+    <details><summary>Moderate Risk</summary>
+      <ul>
+        <li>Schedule a check-up and consider lab testing (A1C or glucose tolerance).</li>
+        <li>Start incorporating more whole foods and fiber into your meals.</li>
+        <li>Begin light to moderate exercise at least 3–4 times a week.</li>
+        <li>Track weight and blood pressure regularly.</li>
+        <li>Discuss preventive strategies with your doctor.</li>
+      </ul>
+    </details>
+    <details><summary>Low Risk</summary>
+      <ul>
+        <li>Maintain your current healthy habits (diet, activity, sleep).</li>
+        <li>Get screened regularly (once a year) as a preventive measure.</li>
+        <li>Continue staying hydrated and limit processed sugars.</li>
+        <li>Educate yourself about early signs of diabetes.</li>
+      </ul>
+    </details>
 
-      // Display result
-      const resultDiv = document.getElementById('predictionResult');
-      if (result.prediction === 1) {
-        resultDiv.innerHTML = `<span style="color: red;">🛑 High risk of Diabetes</span>`;
-      } else {
-        resultDiv.innerHTML = `<span style="color: green;">✅ Low risk of Diabetes</span>`;
-      }
-    } catch (error) {
-      console.error("Error during prediction:", error);
-      document.getElementById('predictionResult').innerHTML = `<span style="color: orange;">Error predicting. Please try again.</span>`;
-    }
-  }
-</script>
+    <!-- NEW SECTION ADDED HERE -->
+    <h2><strong>Healthy Diet Tips for Managing Diabetes</strong></h2>
+    <details><summary>Core Dietary Principles</summary>
+      <ul>
+        <li>Control carbohydrate intake — choose complex over refined carbs.</li>
+        <li>Prefer low glycemic index foods to avoid blood sugar spikes.</li>
+        <li>Combine carbohydrates with protein, fiber, and healthy fats.</li>
+        <li>Avoid sugary and highly processed foods.</li>
+        <li>Stay hydrated — prioritize water over sugary drinks.</li>
+        <li>Eat at regular intervals — avoid skipping meals.</li>
+      </ul>
+    </details>
 
+    <details><summary>Recommended Foods</summary>
+      <ul>
+        <li><strong>Vegetables:</strong> Broccoli, spinach, kale, bell peppers, cucumbers.</li>
+        <li><strong>Whole Grains:</strong> Oats, brown rice, quinoa, whole wheat.</li>
+        <li><strong>Lean Proteins:</strong> Chicken breast, fish, tofu, legumes.</li>
+        <li><strong>Healthy Fats:</strong> Avocados, olive oil, nuts, seeds.</li>
+        <li><strong>Low-GI Fruits:</strong> Berries, apples, oranges, pears.</li>
+        <li><strong>Low-Fat Dairy:</strong> Greek yogurt, almond or soy milk (unsweetened).</li>
+      </ul>
+    </details>
+
+    <details><summary>Foods to Avoid</summary>
+      <ul>
+        <li>Sugary drinks like soda and packaged juices.</li>
+        <li>White bread, pastries, and refined carbs.</li>
+        <li>Processed snacks like chips and cookies.</li>
+        <li>Deep-fried foods and high-fat red meats.</li>
+      </ul>
+    </details>
+
+    <details><summary>Sample Balanced Meal Plate</summary>
+      <ul>
+        <li><strong>Half Plate:</strong> Non-starchy vegetables (e.g., broccoli, salad).</li>
+        <li><strong>One-Quarter Plate:</strong> Lean protein (e.g., grilled chicken, tofu).</li>
+        <li><strong>One-Quarter Plate:</strong> Whole grains or starchy vegetables (e.g., brown rice, sweet potato).</li>
+        <li><strong>Drink:</strong> Water or unsweetened beverage.</li>
+      </ul>
+    </details>
+
+    <details><summary>Meal Timing Tips</summary>
+      <ul>
+        <li>Eat three balanced meals at consistent times daily.</li>
+        <li>Include healthy snacks between meals if needed (e.g., boiled egg, nuts).</li>
+        <li>Don't skip meals to avoid glucose spikes and dips.</li>
+      </ul>
+    </details>
+  </div>
+
+  <div class="container">
+    <h1>Diabetes Prediction</h1>
+
+    <div class="description">
+      <p><strong>About:</strong> Diabetes is a chronic condition that affects how your body processes blood sugar (glucose). It can lead to severe complications if not managed.</p>
+      <p><strong>Causes:</strong> Type 1 is autoimmune; Type 2 is often linked to lifestyle and genetics; gestational happens during pregnancy.</p>
+      <p><strong>Scientific Progress:</strong> Includes CGMs, smart insulin pens, GLP-1 drugs, and beta cell regeneration research.</p>
+      <p><strong>Prevention & Management:</strong> Regular exercise, healthy eating, weight control, and regular screening can significantly reduce the risk of diabetes.</p>
+    </div>
+
+    <div class="form-section">
+      <form id="diabetesForm" method="POST" action="/diabetes">
+        <div class="form-group">
+          <label for="Pregnancies">Pregnancies (0–17)</label>
+          <input type="number" id="Pregnancies" name="Pregnancies" min="0" max="17" placeholder="e.g., 2" required />
+        </div>
+        <div class="form-group">
+          <label for="Glucose">Glucose Level (0–400 mg/dL)</label>
+          <input type="number" id="Glucose" name="Glucose" min="0" max="400" placeholder="e.g., 120" required />
+        </div>
+        <div class="form-group">
+          <label for="BloodPressure">Blood Pressure (30–422 mm Hg)</label>
+          <input type="number" id="BloodPressure" name="BloodPressure" min="30" max="422" placeholder="e.g., 80" required />
+        </div>
+        <div class="form-group">
+          <label for="SkinThickness">Skin Thickness (0–99 mm)</label>
+          <input type="number" id="SkinThickness" name="SkinThickness" min="0" max="99" placeholder="e.g., 23" required />
+        </div>
+        <div class="form-group">
+          <label for="Insulin">Insulin Level (15–846 μU/mL)</label>
+          <input type="number" id="Insulin" name="Insulin" min="15" max="846" placeholder="e.g., 530" required />
+        </div>
+        <div class="form-group">
+          <label for="BMI">BMI (15.0–67.0)</label>
+          <input type="number" id="BMI" name="BMI" step="0.1" min="15" max="67" placeholder="e.g., 28.5" required />
+        </div>
+        <div class="form-group">
+          <label for="DiabetesPedigreeFunction">Diabetes Pedigree Function (0.05–2.5)</label>
+          <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" step="0.01" min="0.05" max="2.5" placeholder="e.g., 0.6" required />
+        </div>
+        <div class="form-group">
+          <label for="Age">Age (18–100)</label>
+          <input type="number" id="Age" name="Age" min="18" max="100" placeholder="e.g., 45" required />
+        </div>
+        <button type="submit" class="predict-btn">
+          <i class="fas fa-vial"></i> Predict
+        </button>
+      </form>
+    </div>
+
+    {% if result %}
+      <div class="result">
+        <strong>Prediction:</strong> {{ result }}
+      </div>
+    {% endif %}
+  </div>
+</div>
 </body>
 </html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kidney Disease Prediction</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #eef9f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-buttons {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+    }
+
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .nav-button:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 80px;
+      color: #00796b;
+      font-size: 32px;
+    }
+
+    .description {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #e0f2f1;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      color: #2c3e50;
+    }
+
+    .form-section {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #f1fdfb;
+      padding: 25px;
+      border-radius: 12px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select {
+      padding: 8px;
+      margin-top: 5px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    button[type="submit"] {
+      margin-top: 25px;
+      padding: 12px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #004d40;
+    }
+
+    .result-container {
+      margin: 20px auto;
+      max-width: 900px;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #e0ffe0;
+      color: #006400;
+      font-weight: bold;
+    }
+
+    .result-bad {
+      background-color: #ffe6e6;
+      color: #990000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <a href="/" class="nav-button"><i class="fas fa-home"></i> Home</a>
+    <a href="/diabetes" class="nav-button"><i class="fas fa-syringe"></i> Diabetes</a>
+    <a href="/cancer" class="nav-button"><i class="fas fa-vial"></i> Breast Cancer</a>
+    <a href="/heart" class="nav-button"><i class="fas fa-heartbeat"></i> Heart</a>
+    <a href="/kidney" class="nav-button"><i class="fas fa-tint"></i> Kidney</a>
+  </div>
+
+  <h1>Kidney Disease Prediction</h1>
+
+  <div class="description">
+    <p><strong>What is Chronic Kidney Disease (CKD)?</strong> CKD refers to the gradual loss of kidney function. If left untreated, it can lead to kidney failure, requiring dialysis or transplant.</p>
+    <p><strong>Causes:</strong> Diabetes, hypertension, glomerulonephritis, and other health conditions.</p>
+    <p><strong>Early Detection:</strong> Using medical data such as blood urea, creatinine, and hemoglobin levels, we can predict the likelihood of CKD using smart algorithms.</p>
+  </div>
+
+  <div class="form-section">
+    <form method="post" action="/kidney">
+      <label>Age (years) <small>(18 – 100)</small></label>
+      <input type="number" name="age" min="18" max="100" placeholder="e.g., 60" required>
+
+      <label>Blood Pressure (mm Hg) <small>(60 – 180)</small></label>
+      <input type="number" name="bp" min="60" max="180" placeholder="e.g., 80" required>
+
+      <label>Specific Gravity (sg) <small>(1.005 – 1.025)</small></label>
+      <input type="number" name="sg" step="0.001" min="1.005" max="1.025" placeholder="e.g., 1.020" required>
+
+      <label>Albumin (g/dL) <small>(0 – 5)</small></label>
+      <input type="number" name="al" min="0" max="5" placeholder="e.g., 1" required>
+
+      <label>Blood Glucose Random (mg/dL) <small>(70 – 500)</small></label>
+      <input type="number" name="bgr" min="70" max="500" placeholder="e.g., 150" required>
+
+      <label>Blood Urea (mg/dL) <small>(10 – 100)</small></label>
+      <input type="number" name="bu" min="10" max="100" placeholder="e.g., 40" required>
+
+      <label>Serum Creatinine (mg/dL) <small>(0.5 – 15)</small></label>
+      <input type="number" name="sc" step="0.1" min="0.5" max="15" placeholder="e.g., 1.5" required>
+
+      <label>Sodium (mEq/L) <small>(120 – 160)</small></label>
+      <input type="number" name="sod" min="120" max="160" placeholder="e.g., 140" required>
+
+      <label>Potassium (mEq/L) <small>(3.0 – 7.0)</small></label>
+      <input type="number" name="pot" step="0.1" min="3.0" max="7.0" placeholder="e.g., 4.5" required>
+
+      <label>Hemoglobin (g/dL) <small>(6 – 18)</small></label>
+      <input type="number" name="hemo" min="6" max="18" placeholder="e.g., 13" required>
+
+      <button type="submit">Predict</button>
+    </form>
+  </div>
+
+  {% if result %}
+  <div class="form-section result-container {% if 'High' in result %}result-bad{% endif %}">
+    <h2>Prediction Result:</h2>
+    <p>{{ result }}</p>
+  </div>
+  {% endif %}
+
+  <script>
+    document.querySelector("form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const response = await fetch("/kidney", {
+        method: "POST",
+        body: formData
+      });
+      const html = await response.text();
+      document.open();
+      document.write(html);
+      document.close();
+    });
+  </script>
+
+</body>
+</html>

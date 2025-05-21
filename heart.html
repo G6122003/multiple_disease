@@ -1,154 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Heart Disease Prediction</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f4f8;
-            padding: 20px;
-            max-width: 900px;
-            margin: auto;
-        }
-        h1, h2 {
-            color: #003366;
-        }
-        .form-container {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select {
-            padding: 8px;
-            margin-top: 5px;
-            width: 100%;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #007acc;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #005f99;
-        }
-        .description {
-            background: #eaf4fc;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .result-container {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f0fff0;
-            color: #006400;
-            font-weight: bold;
-        }
-        .result-bad {
-            background-color: #ffe6e6;
-            color: #990000;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Heart Disease Prediction</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f2f1, #ffffff);
+      margin: 0;
+      padding: 0;
+      color: #2c3e50;
+    }
+
+    .nav-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+    }
+
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .nav-button:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 40px;
+
+    }
+
+    .feature-info {
+      width: 25%;
+      margin-right: 30px;
+    }
+
+    .feature-info h2 {
+      font-size: 1.5em;
+      color: #00796b;
+      margin-bottom: 15px;
+    }
+
+    details {
+      background: #fefde8;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    summary {
+      font-weight: bold;
+      color: #00796b;
+    }
+
+    .container {
+      width: 70%;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #00796b;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      background-color: #e8f5e9;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      font-size: 1.1em;
+      line-height: 1.6;
+
+    }
+
+    .form-section {
+      background-color: #f1f8e9;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #00897b;
+      outline: none;
+    }
+
+    .predict-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-top: 20px;
+    }
+
+    .predict-btn:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+
+    @media(max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .main-content {
+        flex-direction: column;
+      }
+      .feature-info, .container {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Heart Disease Prediction System</h1>
+<!-- HTML -->
+<div class="nav-buttons">
+  <a href="/" class="nav-button"><i class="fas fa-home"></i> Home</a>
+  <a href="/diabetes" class="nav-button"><i class="fas fa-syringe"></i> Diabetes</a>
+  <a href="/heart" class="nav-button"><i class="fas fa-heartbeat"></i> Heart</a>
+  <a href="/cancer" class="nav-button"><i class="fas fa-vial"></i> Breast Cancer</a>
+  <a href="/kidney" class="nav-button"><i class="fas fa-tint"></i> Kidney</a>
+</div>
+
+
+<div class="main-content">
+  <div class="feature-info">
+    <h2><strong>Heart Feature Information</strong></h2>
+    <details><summary>Age</summary>Age in years</details>
+    <details><summary>Sex</summary>1 = male, 0 = female</details>
+    <details><summary>Chest Pain Type</summary>0–3: 0 = typical angina, 1 = atypical angina, etc.</details>
+    <details><summary>Resting Blood Pressure</summary>in mm Hg on admission to the hospital</details>
+    <details><summary>Cholesterol</summary>Serum cholesterol in mg/dl</details>
+    <details><summary>Fasting Blood Sugar</summary>> 120 mg/dl (1 = true; 0 = false)</details>
+    <details><summary>Resting ECG</summary>0 = normal, 1 = ST-T wave abnormality, 2 = probable LV hypertrophy</details>
+    <details><summary>Max Heart Rate</summary>Maximum heart rate achieved</details>
+    <details><summary>Exercise Induced Angina</summary>1 = yes; 0 = no</details>
+    <details><summary>Oldpeak</summary>ST depression induced by exercise relative to rest</details>
+    <details><summary>Slope</summary>0–2: Slope of the peak exercise ST segment</details>
+    <details><summary>Number of Vessels Colored</summary>0–3: number of major vessels (0–3) colored by fluoroscopy</details>
+    <details><summary>Thal</summary>1 = normal; 2 = fixed defect; 3 = reversible defect</details>
+
+    <h2><strong>Suggestions Based on Prediction</strong></h2>
+    <details><summary>High Risk</summary>
+      <ul>
+        <li>See a cardiologist immediately for diagnosis and treatment.</li>
+        <li>Adopt a heart-healthy diet (low sodium, saturated fat).</li>
+        <li>Quit smoking, reduce alcohol, and manage stress.</li>
+        <li>Take prescribed medications consistently.</li>
+        <li>Begin supervised exercise and cardiac rehab if approved.</li>
+      </ul>
+    </details>
+    <details><summary>Moderate Risk</summary>
+      <ul>
+        <li>Schedule a full cardiac evaluation.</li>
+        <li>Improve your diet and activity levels gradually.</li>
+        <li>Monitor blood pressure, cholesterol, and glucose.</li>
+        <li>Discuss family history and genetic risks with your doctor.</li>
+      </ul>
+    </details>
+    <details><summary>Low Risk</summary>
+      <ul>
+        <li>Continue healthy habits: exercise, diet, sleep, no smoking.</li>
+        <li>Stay aware of symptoms like chest pain or shortness of breath.</li>
+        <li>Regular check-ups and cholesterol testing are key.</li>
+      </ul>
+    </details>
+
+    <h2><strong>Healthy Diet Tips for Heart Health</strong></h2>
+    <details><summary>Core Dietary Principles</summary>
+  <ul>
+    <li>Follow a heart-healthy diet rich in fruits, vegetables, whole grains, and legumes.</li>
+    <li>Choose lean protein sources such as fish (especially fatty fish like salmon), skinless poultry, tofu, and beans.</li>
+    <li>Use healthy fats like olive oil, avocado, and nuts in moderation; avoid saturated and trans fats.</li>
+    <li>Prioritize fiber-rich foods to help lower cholesterol (e.g., oats, lentils, flaxseeds).</li>
+    <li>Limit sodium intake — aim for under 1500–2000 mg per day to help manage blood pressure.</li>
+    <li>Stay hydrated and maintain a healthy weight through balanced nutrition and regular physical activity.</li>
+  </ul>
+</details>
+
+<details><summary>Foods to Avoid</summary>
+  <ul>
+    <li>Foods high in saturated fats (e.g., butter, cheese, red meat) and trans fats (e.g., margarine, fried foods).</li>
+    <li>Highly processed snacks like chips, fast food, and baked goods with hydrogenated oils.</li>
+    <li>Excessive salt (sodium) — avoid canned soups, salty snacks, and deli meats.</li>
+    <li>Sugary drinks and desserts which contribute to weight gain and inflammation.</li>
+    <li>Processed meats (sausages, bacon, hot dogs) that are high in salt and unhealthy fats.</li>
+    <li>Alcohol in large quantities — limit to 1 drink/day (women) or 2 drinks/day (men), or avoid entirely.</li>
+  </ul>
+</details>
+
+<details><summary>Sample Balanced Meal Plate</summary>
+  <ul>
+    <li><strong>Breakfast:</strong> Oatmeal with sliced banana, ground flaxseed, and a handful of walnuts. Unsweetened green tea on the side.</li>
+    <li><strong>Lunch:</strong> Grilled salmon or chickpea salad wrap, with a side of mixed greens and olive oil-lemon dressing.</li>
+    <li><strong>Snack:</strong> Carrot sticks with hummus or a handful of almonds.</li>
+    <li><strong>Dinner:</strong> Stir-fried vegetables (broccoli, bell peppers) with tofu or skinless chicken breast, served with brown rice or quinoa.</li>
+    <li><strong>Tip:</strong> Use the plate method — ½ vegetables, ¼ whole grains, ¼ lean protein. Avoid over-salting and use herbs for flavor.</li>
+  </ul>
+</details>
+
+<details><summary>Meal Timing Tips</summary>
+  <ul>
+    <li>Eat smaller, frequent meals to reduce strain on the heart and avoid overeating.</li>
+    <li>Avoid large heavy meals, especially late at night — finish dinner at least 3 hours before bed.</li>
+    <li>Include heart-friendly snacks between meals to stabilize blood sugar and energy levels.</li>
+    <li>Drink water consistently throughout the day — avoid sugary or caffeinated beverages close to bedtime.</li>
+    <li>Be mindful of portions — use smaller plates, eat slowly, and stop eating when you feel satisfied, not full.</li>
+  </ul>
+</details>
+
+  </div>
+
+  <div class="container">
+    <h1>Heart Disease Prediction</h1>
 
     <div class="description">
-        <h2>What is Heart Disease?</h2>
-        <p>Heart disease refers to a range of conditions that affect your heart, including coronary artery disease, heart rhythm problems, and congenital heart defects. It's one of the leading causes of death worldwide.</p>
-
-        <h2>Causes of Heart Disease</h2>
-        <ul>
-            <li>High blood pressure</li>
-            <li>Smoking</li>
-            <li>Obesity and physical inactivity</li>
-            <li>Unhealthy diet and high cholesterol</li>
-            <li>Diabetes</li>
-        </ul>
-
-        <h2>Scientific Progress in Prediction</h2>
-        <p>With the rise of data science and machine learning, researchers can now use models trained on patient data to predict the likelihood of heart disease. These models analyze patterns in factors like cholesterol, blood pressure, and ECG results, enabling early detection and preventive care.</p>
+      <p><strong>About:</strong> It includes conditions like coronary artery disease, arrhythmias, and heart failure.</p>
+      <p><strong>Common Causes:</strong> High BP, cholesterol, smoking, poor diet, stress, sedentary life, and genetics.</p>
+      <p><strong>Scientific Advances:</strong> Stents, statins, cardiac imaging, personalized meds, wearable ECG monitors.</p>
+      <p><strong>Prevention:</strong> Regular exercise, a healthy diet, no smoking, low alcohol, stress control, annual checkups.</p>
     </div>
 
-    <div class="form-container">
-        <form method="post" action="/heart">
-            <label>Age</label>
-            <input type="number" name="age" required>
-
-            <label>Sex (1 = male, 0 = female)</label>
-            <input type="number" name="sex" min="0" max="1" required>
-
-            <label>Chest Pain Type (0–3)</label>
-            <input type="number" name="cp" min="0" max="3" required>
-
-            <label>Resting Blood Pressure</label>
-            <input type="number" name="trestbps" required>
-
-            <label>Cholesterol</label>
-            <input type="number" name="chol" required>
-
-            <label>Fasting Blood Sugar > 120 mg/dl (1 = true; 0 = false)</label>
-            <input type="number" name="fbs" min="0" max="1" required>
-
-            <label>Resting ECG results (0–2)</label>
-            <input type="number" name="restecg" min="0" max="2" required>
-
-            <label>Maximum Heart Rate Achieved</label>
-            <input type="number" name="thalach" required>
-
-            <label>Exercise-induced Angina (1 = yes; 0 = no)</label>
-            <input type="number" name="exang" min="0" max="1" required>
-
-            <label>ST depression induced by exercise</label>
-            <input type="text" name="oldpeak" required>
-
-            <label>Slope of the peak exercise ST segment (0–2)</label>
-            <input type="number" name="slope" min="0" max="2" required>
-
-            <label>Number of major vessels (0–3)</label>
-            <input type="number" name="ca" min="0" max="3" required>
-
-            <label>Thal (1 = normal; 2 = fixed defect; 3 = reversible defect)</label>
-            <input type="number" name="thal" min="1" max="3" required>
-
-            <button type="submit">Predict</button>
-        </form>
+        <div class="form-section">
+      <form id="heartForm" method="POST" action="/heart">
+        <div class="form-group"><label for="age">Age</label><input type="number" id="age" name="age" required></div>
+        <div class="form-group"><label for="sex">Sex (1=Male, 0=Female)</label><input type="number" id="sex" name="sex" required></div>
+        <div class="form-group"><label for="cp">Chest Pain Type (0-3)</label><input type="number" id="cp" name="cp" required></div>
+        <div class="form-group"><label for="trestbps">Resting Blood Pressure (mm Hg)</label><input type="number" id="trestbps" name="trestbps" required></div>
+        <div class="form-group"><label for="chol">Cholesterol (mg/dl)</label><input type="number" id="chol" name="chol" required></div>
+        <div class="form-group"><label for="fbs">Fasting Blood Sugar > 120 mg/dl (1=True, 0=False)</label><input type="number" id="fbs" name="fbs" required></div>
+        <div class="form-group"><label for="restecg">Resting ECG (0-2)</label><input type="number" id="restecg" name="restecg" required></div>
+        <div class="form-group"><label for="thalach">Max Heart Rate Achieved</label><input type="number" id="thalach" name="thalach" required></div>
+        <div class="form-group"><label for="exang">Exercise Induced Angina (1=Yes, 0=No)</label><input type="number" id="exang" name="exang" required></div>
+        <div class="form-group"><label for="oldpeak">Oldpeak (ST depression)</label><input type="number" step="any" id="oldpeak" name="oldpeak" required></div>
+        <div class="form-group"><label for="slope">Slope (0-2)</label><input type="number" id="slope" name="slope" required></div>
+        <div class="form-group"><label for="ca">Number of Vessels Colored (0-3)</label><input type="number" id="ca" name="ca" required></div>
+        <div class="form-group"><label for="thal">Thalassemia (1=Normal, 2=Fixed, 3=Reversible)</label><input type="number" id="thal" name="thal" required></div>
+        <button type="submit" class="predict-btn"><i class="fas fa-heartbeat"></i> Predict</button>
+      </form>
     </div>
+
+
 
     {% if result %}
-    <div class="form-container result-container {% if 'High' in result %}result-bad{% endif %}">
-        <h2>Prediction Result:</h2>
-        <p>{{ result }}</p>
-    </div>
+      <div class="result">
+        <strong>Prediction:</strong> {{ result }}
+      </div>
     {% endif %}
+  </div>
+</div>
 
-    <script>
-        document.querySelector("form").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const response = await fetch("/heart", {
-                method: "POST",
-                body: formData
-            });
-            const html = await response.text();
-            document.open();
-            document.write(html);
-            document.close();
-        });
-    </script>
 </body>
 </html>

@@ -1,19 +1,381 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Breast Cancer Prediction</title>
+  <meta charset="UTF-8" />
+  <title>Breast Cancer Prediction</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e0f2f1, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #2c3e50;
+    }
+
+    .nav-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+    }
+
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .nav-button:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 40px;
+    }
+
+    .feature-info {
+      width: 25%;
+      margin-right: 30px;
+    }
+
+    .feature-info h2 {
+      font-size: 1.5em;
+      color: #00796b;
+      margin-bottom: 15px;
+    }
+
+    details {
+      background: #fefde8;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    summary {
+      font-weight: bold;
+      color: #00796b;
+    }
+
+    .container {
+      width: 70%;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #00796b;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      background-color: #e8f5e9;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .form-section {
+      background-color: #f1f8e9;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #00897b;
+      outline: none;
+    }
+
+    .predict-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00897b;
+      border: none;
+      color: white;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-top: 20px;
+    }
+
+    .predict-btn:hover {
+      background-color: #00695c;
+      transform: translateY(-2px);
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    @media(max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+      .feature-info, .container {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  </style>
 </head>
 <body>
+<div class="nav-buttons">
+  <a href="/" class="nav-button"><i class="fas fa-home"></i> Home</a>
+  <a href="/diabetes" class="nav-button"><i class="fas fa-syringe"></i> Diabetes</a>
+  <a href="/heart" class="nav-button"><i class="fas fa-heartbeat"></i> Heart</a>
+  <a href="/cancer" class="nav-button"><i class="fas fa-vial"></i> Breast Cancer</a>
+  <a href="/kidney" class="nav-button"><i class="fas fa-tint"></i> Kidney</a>
+</div>
+
+<div class="main-content">
+  <div class="feature-info">
+    <h2><strong>Feature Information</strong></h2>
+
+  <details>
+    <summary>Radius Mean</summary>
+    - Average distance from the center to the edge of the cell.
+    - Bigger radius = potentially larger tumor.
+    - <strong>Example:</strong> 14–17 mm may be normal; over 20 mm might need further checks.
+  </details>
+
+  <details>
+    <summary>Texture Mean</summary>
+    - Measures how smooth or rough the cells look in the scan.
+    - Rougher textures can suggest unusual cell growth.
+    - <strong>Tip:</strong> Higher texture doesn't always mean cancer but should be monitored.
+  </details>
+
+  <details>
+    <summary>Perimeter Mean</summary>
+    - Total boundary length around the tumor.
+    - Irregular or long perimeters may hint at abnormal shape.
+    - <strong>Note:</strong> Often increases with radius.
+  </details>
+
+  <details>
+    <summary>Area Mean</summary>
+    - Space occupied by the tumor (in mm²).
+    - Larger area might mean aggressive or fast-growing cells.
+    - <strong>Good to know:</strong> Combined with other features, it improves accuracy.
+  </details>
+
+  <details>
+    <summary>Smoothness Mean</summary>
+    - Tells how smooth or jagged the tumor edges are.
+    - Jagged edges (higher value) could signal malignancy.
+    - <strong>Tip:</strong> Smooth tumors are often benign.
+  </details>
+
+  <details>
+    <summary>Compactness Mean</summary>
+    - Reflects how tightly packed or spread the tumor is.
+    - Less compact (spread out) shapes are more concerning.
+    - <strong>Note:</strong> Compactness = perimeter² / area.
+  </details>
+
+  <details>
+    <summary>Concavity Mean</summary>
+    - Measures how deeply the tumor edge curves inward.
+    - More concave areas may mean more abnormal shape.
+    - <strong>Higher values:</strong> More likely to be cancerous.
+  </details>
+
+  <details>
+    <summary>Concave Points Mean</summary>
+    - Counts the number of concave (inward-curved) parts.
+    - More points = more irregularity.
+    - <strong>Red flag:</strong> Many concave points might mean malignancy.
+  </details>
+
+  <details>
+    <summary>Symmetry Mean</summary>
+    - Measures how evenly shaped the tumor is.
+    - Less symmetry can suggest abnormal growth.
+    - <strong>Hint:</strong> Perfectly symmetrical tumors are rare in cancer.
+  </details>
+
+  <details>
+    <summary>Fractal Dimension Mean</summary>
+    - Describes how complex or detailed the tumor shape is.
+    - Higher values show irregular edges—often seen in cancer cells.
+    - <strong>Think of it like:</strong> Edge "roughness".
+  </details>
+
+
+
+
+    <h2><strong>Suggestions Based on Prediction</strong></h2>
+    <details><summary>High Risk</summary>
+      <ul>
+         <li><strong>Immediate Medical Attention:</strong> Schedule an urgent consultation with an oncologist to review your test results in detail.</li>
+         <li><strong>Advanced Diagnostic Procedures:</strong> Undergo further imaging such as mammography, breast ultrasound, or MRI to assess tumor size, location, and spread.</li>
+         <li><strong>Biopsy Recommendation:</strong> A tissue biopsy (core needle, fine needle, or surgical) is likely needed to determine if the tumor is malignant.</li>
+         <li><strong>Genetic Counseling & Testing:</strong> If you have a family history of breast or ovarian cancer, consider BRCA1/BRCA2 or other genetic testing to understand hereditary risk.</li>
+         <li><strong>Treatment Planning:</strong> Based on diagnostic results, prepare for a treatment plan that may include surgery, radiation, chemotherapy, hormone therapy, or targeted therapy.</li>
+         <li><strong>Emotional & Mental Health Support:</strong> Connect with a support group or counselor to manage emotional stress during diagnosis and treatment planning.</li>
+         <li><strong>Adopt a Healing Lifestyle:</strong> Maintain a nutritious diet, avoid alcohol and tobacco, manage weight, and get adequate rest to strengthen the body for possible treatments.</li>
+         <li><strong>Involve Family:</strong> Share findings with close family members for support and to inform them of possible shared risk.</li>
+         <li><strong>Keep Records:</strong> Maintain a medical file with all reports, imaging results, and consultations to streamline care coordination across specialists.</li>
+
+  </ul>
+</details>
+
+    <details><summary>Moderate Risk</summary>
+
+      <ul>
+        <li>The features (tumor size, texture, symmetry, etc.) suggest potential concern.</li>
+        <li>Not clearly benign (low risk) or malignant (high risk).</li>
+        <li>Schedule follow-up diagnostic tests such as mammogram, ultrasound, or MRI.</li>
+        <li>Consult with a breast specialist or oncologist for further evaluation.</li>
+        <li>Consider biopsy if imaging results remain inconclusive.</li>
+        <li>Monitor regularly (every 3–6 months) and maintain a healthy lifestyle.</li>
+
+  </ul>
+</details>
+
+    <details><summary>Low Risk</summary>
+      <ul>
+        <li>Continue regular screenings and self-exams monthly.</li>
+        <li>Report any breast changes or discomfort to your doctor promptly.</li>
+        <li>Maintain a healthy weight and avoid smoking or alcohol abuse.</li>
+      </ul>
+    </details>
+
+    <h2><strong>Breast Cancer Prevention Tips</strong></h2>
+    <details><summary>Healthy Lifestyle</summary>
+      <ul>
+        <li>Engage in at least 150 minutes of moderate exercise per week.</li>
+        <li>Eat a diet rich in fruits, vegetables, and fiber.</li>
+        <li>Limit alcohol intake and avoid smoking.</li>
+      </ul>
+    </details>
+    <details><summary>Regular Checkups</summary>
+      <ul>
+        <li>Schedule clinical breast exams annually.</li>
+        <li>Get mammograms starting at age 40 or earlier if high risk.</li>
+        <li>Know your family history and discuss it with your doctor.</li>
+      </ul>
+    </details>
+    <details><summary>Core Dietary Principles</summary>
+  <ul>
+    <li>Focus on a plant-based diet rich in colorful vegetables and fruits (aim for 5+ servings/day).</li>
+    <li>Include whole grains like quinoa, oats, and brown rice for fiber and sustained energy.</li>
+    <li>Incorporate healthy fats such as omega-3s from flaxseeds, walnuts, and fatty fish (e.g., salmon).</li>
+    <li>Choose lean protein sources like legumes, tofu, lentils, skinless poultry, and fish.</li>
+    <li>Stay hydrated — drink at least 8–10 cups of water daily.</li>
+    <li>Limit added sugars and processed foods to support immune function and maintain healthy weight.</li>
+  </ul>
+</details>
+
+<details><summary>Foods to Avoid</summary>
+  <ul>
+    <li>Processed meats (e.g., sausages, bacon) which are linked to increased cancer risk.</li>
+    <li>Fried and greasy foods high in trans fats and saturated fats.</li>
+    <li>Sugary beverages like soda, sweetened tea, and energy drinks — these spike insulin levels.</li>
+    <li>Excessive alcohol consumption — even small amounts can increase breast cancer risk.</li>
+    <li>Highly processed snacks (chips, packaged cookies, fast food) that lack nutrients.</li>
+    <li>Red meat in large amounts — especially grilled or charred varieties.</li>
+  </ul>
+</details>
+
+<details><summary>Sample Balanced Meal Plate</summary>
+  <ul>
+    <li><strong>Breakfast:</strong> Steel-cut oats topped with berries, chia seeds, and a spoon of almond butter. Green tea or warm lemon water on the side.</li>
+    <li><strong>Lunch:</strong> Grilled salmon or lentil patties, quinoa salad with kale, carrots, cherry tomatoes, olive oil dressing.</li>
+    <li><strong>Snack:</strong> A handful of mixed nuts and sliced apple or Greek yogurt with flaxseed.</li>
+    <li><strong>Dinner:</strong> Stir-fried tofu or chicken with broccoli, bell peppers, and brown rice. Herbal tea after meal.</li>
+    <li><strong>Tip:</strong> Fill half your plate with vegetables, a quarter with protein, and a quarter with whole grains.</li>
+  </ul>
+</details>
+
+<details><summary>Meal Timing Tips</summary>
+  <ul>
+    <li>Maintain consistent eating times to support digestion and metabolism.</li>
+    <li>Avoid eating heavy meals late at night — aim to finish dinner at least 2–3 hours before bedtime.</li>
+    <li>Eat small, balanced meals every 3–4 hours to prevent energy dips and maintain stable blood sugar.</li>
+    <li>Include a protein-rich snack if undergoing treatment to avoid muscle loss and fatigue.</li>
+    <li>Practice mindful eating — chew thoroughly, eat slowly, and avoid distractions during meals.</li>
+  </ul>
+</details>
+
+  </div>
+
+  <div class="container">
     <h1>Breast Cancer Prediction</h1>
-    <form method="post">
-        {% for i in range(10) %}
-        <label>Feature {{ i+1 }}:</label>
-        <input type="text" name="f{{ i }}" required><br>
-        {% endfor %}
-        <button type="submit">Predict</button>
-    </form>
+
+    <div class="description">
+      <p><strong>About:</strong> Breast cancer is the most common cancer in women. Early detection improves treatment outcomes significantly.</p>
+      <p><strong>Causes:</strong> Include genetic mutations (like BRCA1/2), hormonal factors, and environmental exposures.</p>
+      <p><strong>Prevention & Detection:</strong> Regular screening, healthy habits, and awareness of changes in breast tissue are key to prevention and early detection.</p>
+    </div>
+
+    <div class="form-section">
+  <form method="POST" action="/cancer">
+    <div class="form-group"><label>Radius Mean (6–30 mm)</label><input type="number" name="radius_mean" step="0.01" min="6" max="30" required></div>
+    <div class="form-group"><label>Texture Mean (10–40)</label><input type="number" name="texture_mean" step="0.01" min="10" max="40" required></div>
+    <div class="form-group"><label>Perimeter Mean (40–200 mm)</label><input type="number" name="perimeter_mean" step="0.01" min="40" max="200" required></div>
+    <div class="form-group"><label>Area Mean (100–2500 mm²)</label><input type="number" name="area_mean" min="100" max="2500" required></div>
+    <div class="form-group"><label>Smoothness Mean (0.05–0.2)</label><input type="number" name="smoothness_mean" step="0.001" min="0.05" max="0.2" required></div>
+    <div class="form-group"><label>Compactness Mean (0.01–1.0)</label><input type="number" name="compactness_mean" step="0.001" min="0.01" max="1.0" required></div>
+    <div class="form-group"><label>Concavity Mean (0.0–0.5)</label><input type="number" name="concavity_mean" step="0.001" min="0.0" max="0.5" required></div>
+    <div class="form-group"><label>Concave Points Mean (0.0–0.3)</label><input type="number" name="concave_points_mean" step="0.001" min="0.0" max="0.3" required></div>
+    <div class="form-group"><label>Symmetry Mean (0.1–0.4)</label><input type="number" name="symmetry_mean" step="0.001" min="0.1" max="0.4" required></div>
+    <div class="form-group"><label>Fractal Dimension Mean (0.05–0.2)</label><input type="number" name="fractal_dimension_mean" step="0.001" min="0.05" max="0.2" required></div>
+
+    <button type="submit" class="predict-btn"><i class="fas fa-vial"></i> Predict</button>
+  </form>
+</div>
+
     {% if result %}
-    <h2>Prediction Result: {{ result }}</h2>
+      <div class="result">
+        <strong>Prediction:</strong> {{ result }}
+      </div>
     {% endif %}
+  </div>
+</div>
 </body>
 </html>

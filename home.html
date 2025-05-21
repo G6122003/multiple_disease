@@ -21,7 +21,6 @@
     flex-wrap: wrap;
   }
 
-  /* Left Panel Styles */
   .left-panel {
     width: 35%;
     padding: 30px;
@@ -32,14 +31,12 @@
     overflow-y: auto;
   }
 
-  /* Main Panel Styles */
   .main-panel {
     flex: 1;
-    padding: 20px;
+    padding: 0px;
     min-width: 300px;
   }
 
-  /* Common Styles */
   h2 {
     color: #33691e;
     margin-bottom: 15px;
@@ -66,7 +63,6 @@
     margin-top: 5px;
   }
 
-  /* Header Styles */
   h1 {
     font-size: 2.5em;
     color: #00796b;
@@ -80,7 +76,6 @@
     max-width: 800px;
   }
 
-  /* Buttons */
   .button-container {
     display: flex;
     gap: 20px;
@@ -108,12 +103,10 @@
     transform: translateY(-2px);
   }
 
-  /* FAQ & Resources Styles */
   .interactive-section {
     margin-top: 40px;
   }
 
-  /* Testimonials / Case Studies */
   .testimonials {
     margin-top: 30px;
     background-color: #fff3e0;
@@ -130,12 +123,10 @@
     margin-bottom: 0;
   }
 
-  /* Collapsible Sections */
   .collapsible {
     margin-bottom: 20px;
   }
 
-  /* Footer Styles */
   footer {
     text-align: center;
     margin-top: 60px;
@@ -143,7 +134,6 @@
     color: #607d8b;
   }
 
-  /* External Links & Icons */
   a {
     color: #33691e;
     text-decoration: none;
@@ -152,7 +142,29 @@
     text-decoration: underline;
   }
 
-  /* Responsive */
+  .disease-nav {
+    text-align: center;
+    margin: 25px 0 40px 0;
+  }
+  .disease-nav a {
+    margin: 0 20px;
+    font-weight: bold;
+    font-size: 1.15em;
+    text-decoration: none;
+  }
+  .disease-nav a:hover {
+    color: #004d40;
+  }
+  .disease-nav .diabetes {
+    color: #00796b;
+  }
+  .disease-nav .heart {
+    color: #c62828;
+  }
+  .disease-nav .cancer {
+    color: #6a1b9a;
+  }
+
   @media(max-width: 768px) {
     .container {
       flex-direction: column;
@@ -214,6 +226,35 @@
         <li>Symmetry</li>
       </ul>
     </details>
+    <details>
+      <summary>Kidney Disease</summary>
+      <ul>
+        <li>Age</li>
+        <li>Blood Pressure</li>
+        <li>Specific Gravity</li>
+        <li>Albumin</li>
+        <li>Sugar</li>
+        <li>Red Blood Cells</li>
+        <li>Pus Cell</li>
+        <li>Pus Cell Clumps</li>
+        <li>Bacteria</li>
+        <li>Blood Glucose Random</li>
+        <li>Blood Urea</li>
+        <li>Serum Creatinine</li>
+        <li>Sodium</li>
+        <li>Potassium</li>
+        <li>Hemoglobin</li>
+        <li>Packed Cell Volume</li>
+        <li>White Blood Cell Count</li>
+        <li>Red Blood Cell Count</li>
+        <li>Hypertension</li>
+        <li>Diabetes Mellitus</li>
+        <li>Coronary Artery Disease</li>
+        <li>Appetite</li>
+        <li>Pedal Edema</li>
+        <li>Anemia</li>
+      </ul>
+    </details>
 
     <h2>Dataset Insights</h2>
     <ul>
@@ -250,10 +291,11 @@
 
   <!-- Main Panel -->
   <div class="main-panel">
-    <h1>Welcome to the Disease Prediction System</h1>
+    <h1>Know Your Health Risks</h1>
+
     <p class="description">
-      Our intelligent web application uses advanced <strong>Machine Learning algorithms</strong> to help users predict three major diseases effectively:
-      <strong>Diabetes, Heart Disease, and Breast Cancer</strong>.
+      Our web application uses advanced <strong>Machine Learning algorithms</strong> to help users predict four major diseases effectively:
+      <strong>Diabetes, Heart Disease, Breast Cancer, and Kidney Disease</strong>.
       <br><br>
       This system is designed to be used by both everyday individuals and researchers for better health monitoring and early disease detection.
       <br><br>
@@ -271,11 +313,11 @@
       <a href="/diabetes"><button class="nav-button"><i class="fas fa-syringe"></i> Diabetes Prediction</button></a>
       <a href="/heart"><button class="nav-button"><i class="fas fa-heartbeat"></i> Heart Disease Prediction</button></a>
       <a href="/cancer"><button class="nav-button"><i class="fas fa-vial"></i> Breast Cancer Prediction</button></a>
+      <a href="/kidney"><button class="nav-button"><i class="fas fa-tint"></i> Kidney Disease Prediction</button></a>
     </div>
 
-    <!-- Interactive FAQ Accordion -->
     <div class="interactive-section">
-           <h2>Frequently Asked Questions (FAQ)</h2>
+      <h2>Frequently Asked Questions (FAQ)</h2>
       <details class="collapsible">
         <summary>How accurate are the predictions?</summary>
         <p>Our system uses trained machine learning models with high accuracy rates, but predictions should be used as guidance and not definitive diagnosis. Always consult healthcare professionals for medical advice.</p>
@@ -289,9 +331,6 @@
         <p>All user inputs are processed locally or securely transmitted. We prioritize your privacy and do not store personal health data without consent.</p>
       </details>
 
-
-
-      <!-- Additional Resources -->
       <div class="collapsible">
         <h2>Additional Resources</h2>
         <ul>
@@ -304,7 +343,6 @@
   </div>
 </div>
 
-<!-- Footer -->
 <footer>
   &copy; 2025 Multi Disease Prediction System | Powered by Machine Learning
 </footer>
